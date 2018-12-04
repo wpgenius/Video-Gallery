@@ -19,7 +19,7 @@
  *
  * @package    Video_Gallery
  * @subpackage Video_Gallery/includes
- * @author     Team WPGenius <mane.makarand@gmail.com>
+ * @author     Team WPGenius <deepak@wpgenius.in>
  */
 class Video_Gallery_Loader {
 

@@ -18,7 +18,7 @@
  *
  * @package    Video_Gallery
  * @subpackage Video_Gallery/public
- * @author     Team WPGenius <mane.makarand@gmail.com>
+ * @author     Team WPGenius <deepak@wpgenius.in>
  */
 class Video_Gallery_Public {
 
