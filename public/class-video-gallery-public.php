@@ -99,5 +99,71 @@ class Video_Gallery_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-public.js', array( 'jquery' ), $this->version, false );
 
 	}
+    
+     public function video_shortcode($atts){
+        
+        $a = shortcode_atts(
+            array(
+                'cat'   => null,
+            )
+        , $atts
+        );
+   	 
+         // var_dump($atts);die;
+    $args = array(
+            'post_type' => 'videos-gallery',
+            'tax_query' => array(
+					
+                    array(
+                        'taxonomy' => 'gallery-video-albums',
+                        'field'    => 'slug',
+                        'terms'    => $a['cat'],
+                    ),
+                 )
+					
+                );
+	
+
+		$query = new WP_Query( $args );
+
+		
+		if( $query->have_posts() ){
+			
+			$html = '';
+			
+			while ( $query->have_posts() ){
+				
+              $query->the_post();
+              $html .= '<br><h6 style="color:orange;">'.get_the_title().'</h6>';
+                
+                    // Get the video URL and put it in the $video variable
+                    $videoID = get_post_meta(get_the_ID(), 'mj_video_post_meta_value', true);
+                    
+                    // Get the video width and put it in the $videoWidth variable
+                    $videoWidth = get_post_meta(get_the_ID(), 'video_width', true);
+                
+                
+                    //var_dump($videoHeight);die;
+                
+                // Check if there is in fact a video URL
+                if($videoID){
+                    // embed code via oEmbed
+                    $html .=  wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
+                }
+                  
+				
+			}
+			return $html.'<hr />';
+			
+		}else{
+			return 'No Video found';
+		}
+		
+    }
+    
+    public function register_shortcode(){
+        
+         add_shortcode( 'video', array( $this, 'video_shortcode') );
+    } 
 
 }
