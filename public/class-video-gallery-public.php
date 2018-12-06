@@ -107,17 +107,18 @@ class Video_Gallery_Public {
         $a = shortcode_atts(
             array(
                 'cat'   => null,
+                
             )
         , $atts
         );
    	 
-         // var_dump($atts);die;
+        // var_dump($atts);die;
     $args = array(
             'post_type' => 'videos-gallery',
             'tax_query' => array(
 					
                     array(
-                        'taxonomy' => 'gallery-video-albums',
+                        'taxonomy' => 'gallery-video-albums',   
                         'field'    => 'slug',
                         'terms'    => $a['cat'],
                     ),
@@ -138,22 +139,60 @@ class Video_Gallery_Public {
               $query->the_post();
               $html .= '<br><h6 style="color:orange;">'.get_the_title().'</h6>';
                 
+                
                     // Get the video URL and put it in the $video variable
                     $videoID = get_post_meta(get_the_ID(), 'mj_video_post_meta_value', true);
                    // var_dump($videoID);die;
                     // Get the video width and put it in the $videoWidth variable
                     $videoWidth = get_post_meta(get_the_ID(), 'video_width', true);
                     
-                //$lm= get_post_meta(get_the_id());
-               
+               /* Works on three url formats of youtube like
+                  type1: http://www.youtube.com/watch?v=9Jr6OtOIw
+                  type2: http://www.youtube.com/watch?v=9Jr6Otgiw&feature=related
+                  type3: http://youtu.be/9Jr6OiOIw */
+                
+                if(isset($videoID) && !empty($videoID)){
+                    
                     $parts = explode("?v=", $videoID);
-                    //echo $parts[1];die;
+                    $vid_id=$parts[1];
+                    
+                    if(isset($vid_id) && !empty($vid_id) && is_array($vid_id) && count($vid_id)>1){
+                        
+                        $params = explode("&", $vid_id);
+                        
+                        if(isset($params) && !empty($params) && is_array($params)){
+                            
+                        foreach($params as $param){
+                            $kv = explode("=", $param);
+                            if(isset($kv) && !empty($kv) && is_array($kv) && count($kv)>1){
+                                if($kv[0]=='v'){
+                                $vid_id = $kv[1];
+                                $flag = true;
+                                break;
+                                }
+                                }
+                        
+                            }
+               
+                        }
+                    }
+                        if(!$flag){
+                        $needle = "youtu.be/";
+                            $pos = null;
+                            $pos = strpos($videoID, $needle);
+                            if ($pos !== false) {
+                            $start = $pos + strlen($needle);
+                            $vid_id = substr($videoID, $start, 11);
+                            // var_dump($vid_id);die;
             
+                            }           
+                        }   
+                }
                 
                 // Check if there is in fact a video URL
                 if($videoID){
                     // embed code via oEmbed
-                    $html.= '<a href="'.$videoID.'" class="popup-youtube"> <img src="http://img.youtube.com/vi/'.$parts[1].'/0.jpg"/>';
+                    $html.= '<a href="www.youtube.com/watch?v='.$vid_id.'" class="popup-youtube"> <img src="http://img.youtube.com/vi/'.$vid_id.'/0.jpg"/>';
                     
                   // $html .=  wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
                     
