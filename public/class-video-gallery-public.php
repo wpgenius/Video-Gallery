@@ -74,6 +74,7 @@ class Video_Gallery_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/video-gallery-public.css', array(), $this->version, 'all' );
+        wp_enqueue_style( 'magnific-popup', plugin_dir_url( __FILE__ ) . 'css/magnific-popup.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,7 +97,8 @@ class Video_Gallery_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'jquery-magnific-popup', plugin_dir_url( __FILE__ ) . 'js/jquery.magnific-popup.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-public.js', array( 'jquery' ), $this->version, false );
 
 	}
     
@@ -123,7 +125,7 @@ class Video_Gallery_Public {
 					
                 );
 	
-
+        
 		$query = new WP_Query( $args );
 
 		
@@ -138,17 +140,24 @@ class Video_Gallery_Public {
                 
                     // Get the video URL and put it in the $video variable
                     $videoID = get_post_meta(get_the_ID(), 'mj_video_post_meta_value', true);
-                    
+                   // var_dump($videoID);die;
                     // Get the video width and put it in the $videoWidth variable
                     $videoWidth = get_post_meta(get_the_ID(), 'video_width', true);
-                
-                
-                    //var_dump($videoHeight);die;
+                    
+                //$lm= get_post_meta(get_the_id());
+               
+                    $parts = explode("?v=", $videoID);
+                    //echo $parts[1];die;
+            
                 
                 // Check if there is in fact a video URL
                 if($videoID){
                     // embed code via oEmbed
-                    $html .=  wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
+                    $html.= '<a href="'.$videoID.'" class="popup-youtube"> <img src="http://img.youtube.com/vi/'.$parts[1].'/0.jpg"/>';
+                    
+                  // $html .=  wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
+                    
+                    $html.= '</a>';
                 }
                   
 				

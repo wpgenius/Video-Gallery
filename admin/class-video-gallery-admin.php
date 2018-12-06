@@ -227,7 +227,7 @@ class Video_Gallery_Admin {
         
 
         
-    }
+        }
 
    
 }
