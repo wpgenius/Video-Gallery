@@ -107,13 +107,13 @@ class Video_Gallery_Public {
         $a = shortcode_atts(
             array(
                 'cat'   => null,
-                
+                'columns'=>null,
             )
         , $atts
         );
    	 
-        // var_dump($atts);die;
-    $args = array(
+        // var_dump($a['columns']);die;
+            $args = array(
             'post_type' => 'videos-gallery',
             'tax_query' => array(
 					
@@ -129,15 +129,15 @@ class Video_Gallery_Public {
         
 		$query = new WP_Query( $args );
 
-		
+
 		if( $query->have_posts() ){
 			
 			$html = '';
-			
+
 			while ( $query->have_posts() ){
-				
+
               $query->the_post();
-              $html .= '<br><h6 style="color:orange;">'.get_the_title().'</h6>';
+            //$html .= '<h6 style="color:orange;">'.get_the_title().'</h6>';
                 
                 
                     // Get the video URL and put it in the $video variable
@@ -145,7 +145,11 @@ class Video_Gallery_Public {
                    // var_dump($videoID);die;
                     // Get the video width and put it in the $videoWidth variable
                     $videoWidth = get_post_meta(get_the_ID(), 'video_width', true);
+                 // Get the video width and put it in the $videoWidth variable
+            
+                
                     
+                //var_dump($videoPopup);die;
                /* Works on three url formats of youtube like
                   type1: http://www.youtube.com/watch?v=9Jr6OtOIw
                   type2: http://www.youtube.com/watch?v=9Jr6Otgiw&feature=related
@@ -188,25 +192,34 @@ class Video_Gallery_Public {
                             }           
                         }   
                 }
-                
+                 $html .=  '<div class="column-'.$a['columns'].'">';
+
                 // Check if there is in fact a video URL
                 if($videoID){
+                    
+                    if(get_post_meta(get_the_ID(), 'video_popup', true)=='yes'){
+
+                        $html.= '<a href="www.youtube.com/watch?v='.$vid_id.'" class="popup-youtube"> <img  src="http://img.youtube.com/vi/'.$vid_id.'/0.jpg"  width="'.$videoWidth.'" />';
+                        $html.= '</a>';
+                    }else{
+                        $html .=  wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
+                    }
                     // embed code via oEmbed
-                    $html.= '<a href="www.youtube.com/watch?v='.$vid_id.'" class="popup-youtube"> <img src="http://img.youtube.com/vi/'.$vid_id.'/0.jpg"/>';
-                    
-                  // $html .=  wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
-                    
-                    $html.= '</a>';
-                }
-                  
+                   
+                } 
+                    $html .=  '</div>';
+
 				
 			}
-			return $html.'<hr />';
+            $html .=  '</div>';
+        
+
+			return $html;
 			
-		}else{
+		}
+         else{
 			return 'No Video found';
 		}
-		
     }
     
     public function register_shortcode(){

@@ -187,7 +187,8 @@ class Video_Gallery_Admin {
 		<table class="form-table cmb_metabox">
 			<tbody>
 				<tr class="cmb-type-text cmb_id_themestudio_custom_video_link">
-					<th style="width:13%">
+					
+                    <th style="width:13%">
 						<label for="youtube_link">Enter Video Link</label>
 					</th>
 					<td>
@@ -204,6 +205,15 @@ class Video_Gallery_Admin {
                     
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        <label for="video_popup">Check for video popup:</label> 
+                    </th>
+                    <td><?php $checkboxMeta = get_post_meta( $post->ID );?>
+                        <input type="checkbox" name="video_popup" id="video_popup" value="yes" <?php if ( isset ( $checkboxMeta['video_popup'] ) ) checked( $checkboxMeta['video_popup'][0], 'yes' ); ?> />
+                    
+                    </td>
+                </tr>
                 
             
             </tbody>
@@ -215,17 +225,24 @@ class Video_Gallery_Admin {
 		if(isset($_POST['youtube_link']) && $_POST['youtube_link'] != ''){
 
 			$mydata =  $_POST['youtube_link'];
-			add_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
+			//add_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
 			update_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
 		}
         
         if($_POST["video_width"]){
-            $year = $_POST["video_width"];
-            add_post_meta( $post_id, 'video_width', $year );
-            update_post_meta( $post_id,'video_width' , $year);
+            $width = $_POST["video_width"];
+            //add_post_meta( $post_id, 'video_width', $width );
+            update_post_meta( $post_id,'video_width' , $width);
         }
         
-
+         
+        
+        if( isset( $_POST[ 'video_popup' ] ) ) {
+        update_post_meta( $post_id, 'video_popup', 'yes' );
+        } else {
+        update_post_meta( $post_id, 'video_popup', 'no' );
+        }  
+        
         
         }
 
