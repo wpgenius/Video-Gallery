@@ -1,6 +1,3 @@
-#Video Gallery
-=============================
-
 
 === Plugin Name ===
 Contributors: (this should be a list of wordpress.org userid's)
