@@ -128,100 +128,93 @@ class Video_Gallery_Public {
 	
         
 		$query = new WP_Query( $args );
-
+         $count=0;
 
 		if( $query->have_posts() ){
 			
 			$html = '';
-
+            $html.= '<div class="row">'; 
 			while ( $query->have_posts() ){
 
               $query->the_post();
-            //$html .= '<h6 style="color:orange;">'.get_the_title().'</h6>';
-                
-                
-                    // Get the video URL and put it in the $video variable
-                    $videoID = get_post_meta(get_the_ID(), 'mj_video_post_meta_value', true);
-                   // var_dump($videoID);die;
-                    // Get the video width and put it in the $videoWidth variable
-                    $videoWidth = get_post_meta(get_the_ID(), 'video_width', true);
-                 // Get the video width and put it in the $videoWidth variable
             
+                $videoID = get_post_meta(get_the_ID(), 'channel_youtube', true);
+                $API_key    = 'AIzaSyAvN-IZc_qQRoTdLa4of-4gMSZp7sP_ZYw';
+                $maxResults = 20;
+                $videoWidth = get_post_meta(get_the_ID(), 'video_width', true);
                 
-                    
-                //var_dump($videoPopup);die;
-               /* Works on three url formats of youtube like
-                  type1: http://www.youtube.com/watch?v=9Jr6OtOIw
-                  type2: http://www.youtube.com/watch?v=9Jr6Otgiw&feature=related
-                  type3: http://youtu.be/9Jr6OiOIw */
-                
-                if(isset($videoID) && !empty($videoID)){
-                    
-                    $parts = explode("?v=", $videoID);
-                    $vid_id=$parts[1];
-                    
-                    if(isset($vid_id) && !empty($vid_id) && is_array($vid_id) && count($vid_id)>1){
-                        
-                        $params = explode("&", $vid_id);
-                        
-                        if(isset($params) && !empty($params) && is_array($params)){
-                            
-                        foreach($params as $param){
-                            $kv = explode("=", $param);
-                            if(isset($kv) && !empty($kv) && is_array($kv) && count($kv)>1){
-                                if($kv[0]=='v'){
-                                $vid_id = $kv[1];
-                                $flag = true;
-                                break;
-                                }
-                                }
-                        
-                            }
-               
-                        }
-                    }
-                        if(!$flag){
-                        $needle = "youtu.be/";
-                            $pos = null;
-                            $pos = strpos($videoID, $needle);
-                            if ($pos !== false) {
-                            $start = $pos + strlen($needle);
-                            $vid_id = substr($videoID, $start, 11);
-                            // var_dump($vid_id);die;
-            
-                            }           
-                        }   
-                }
-                 $html .=  '<div class="column-'.$a['columns'].'">';
+                 
+               if(get_post_meta(get_the_ID(), 'channel_check', true)=='yes')
+                {
+                     $videoList = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId='.$videoID.'&maxResults='.$maxResults.'&key='.$API_key.''));
 
-                // Check if there is in fact a video URL
-                if($videoID){
-                    
                     if(get_post_meta(get_the_ID(), 'video_popup', true)=='yes'){
+                       
+                                 foreach($videoList->items as $item){
+                                    $count++;
+                                    //Embed video
+                                    $html.=  '<div class="column-'.$a['columns'].'">';
+                                    $html.= '<a href="www.youtube.com/watch?v='.$item->id->videoId.'" class="popup-youtube"> 
+                                    <img  src="http://img.youtube.com/vi/'.$item->id->videoId.'/0.jpg"              width="'.$videoWidth.'" /><p>'.$item->snippet->title.'</p> </div>';
 
-                        $html.= '<a href="www.youtube.com/watch?v='.$vid_id.'" class="popup-youtube"> <img  src="http://img.youtube.com/vi/'.$vid_id.'/0.jpg"  width="'.$videoWidth.'" />';
-                        $html.= '</a>';
+                                     if($count%$a['columns']==0){
+                                     $html.='<div class="clearfix"></div>';
+                                     }
+
+                        } 
+
                     }else{
-                        $html .=  wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
+                                 foreach($videoList->items as $item){
+                                    $count++;
+                                    //Embed video
+                                    $html.=  '<div class="column-'.$a['columns'].'">';
+                                    $html.=  '<iframe width="'.$videoWidth.'" height="200" src="https://www.youtube.com/embed/'.$item->id->videoId.'" frameborder="0" allowfullscreen></iframe><p>'. $item->snippet->title .'<p> </div>';
+
+                                     if($count%$a['columns']==0){
+                                     $html.='<div class="clearfix"></div>';
+                                     }
+
+                        } 
+
                     }
-                    // embed code via oEmbed
                    
-                } 
-                    $html .=  '</div>';
+               } else {
+                   
+                if(get_post_meta(get_the_ID(), 'video_popup', true)=='yes'){
+                        $count++;
+                       
+                        
+                        $html.=  '<div class="column-'.$a['columns'].'">';
+                        $html.= '<a href="www.youtube.com/watch?v='.$videoID.'" class="popup-youtube"> 
+                        <img  src="http://img.youtube.com/vi/'.$videoID.'/0.jpg"  width="'.$videoWidth.'" />';
+                        $html.= '</a>';
+                        $html.=  get_the_title(get_the_id());
+                        $html.='</div>';
+                        
+                    }else{
+                        $count++;
+                        $html.=  '<div class="column-'.$a['columns'].'">';
 
-				
-			}
-            $html .=  '</div>';
-        
+                        //$html.= wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
+                        $html.= '<iframe width="'.$videoWidth.'" height="200" src="https://www.youtube.com/embed/'.$videoID.'"></iframe>';
+                        $html.=  get_the_title(get_the_id());
+                        $html.='</div>';
+                }
+                   
+                   
+               }   
+                if($count%$a['columns']==0){
+                        $html.='<div class="clearfix"></div>';
+                }
+                  
+            }
+			$html.=  '</div>';
+            return $html;
 
-			return $html;
-			
-		}
-         else{
-			return 'No Video found';
-		}
-    }
-    
+         
+        }
+         
+     }
     public function register_shortcode(){
         
          add_shortcode( 'video', array( $this, 'video_shortcode') );

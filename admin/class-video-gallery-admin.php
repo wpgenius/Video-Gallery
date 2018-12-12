@@ -196,6 +196,17 @@ class Video_Gallery_Admin {
 						<label>Please enter video link.</label>
 					</td>
 				</tr>
+                
+                <tr>
+                    <th>
+                        <label for="video_popup">Check if URL is YouTube Channel :</label> 
+                    </th>
+                    <td><?php $checkboxMeta = get_post_meta( $post->ID );?>
+                        <input type="checkbox" name="channel_check" id="channel_check" value="yes" <?php if ( isset ( $checkboxMeta['channel_check'] ) ) checked( $checkboxMeta['channel_check'][0], 'yes' ); ?> />
+                    
+                    </td>
+                </tr>
+                
                 <tr>
                     <th>
                         <label for="video_width">Width:</label> 
@@ -215,7 +226,8 @@ class Video_Gallery_Admin {
                     </td>
                 </tr>
                 
-            
+                <td>
+                
             </tbody>
 		</table><?php
 	}
@@ -244,7 +256,98 @@ class Video_Gallery_Admin {
         }  
         
         
+        if( isset( $_POST[ 'channel_check' ] ) ) {
+        update_post_meta( $post_id, 'channel_check', 'yes' );
+        } else {
+        update_post_meta( $post_id, 'channel_check', 'no' );
+        } 
+        
+        $videoID = get_post_meta(get_the_ID(), 'mj_video_post_meta_value', true); 
+        $API_key    = 'AIzaSyAvN-IZc_qQRoTdLa4of-4gMSZp7sP_ZYw';
+        $channel="";
+        if(preg_match("/\buser\b/i", $videoID) || preg_match("/\bchannel\b/i", $videoID)){
+            $channel="true";
         }
+        if(preg_match("/\bwatch\b/i", $videoID) || preg_match("/\byoutu.be\b/i", $videoID)){
+            $channel="false";
+        }
+        
+          if (preg_match("/\buser\b/i", $videoID))
+                                {
+                                    $cparts = explode("user/", $videoID);
+                                    $c_video  = $cparts[1];
+                                    $channel_ids = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/channels?key='.$API_key.'&forUsername='.$c_video.'&part=id'));
+
+                                        foreach($channel_ids->items as $ch_id){
+
+                                            if($ch_id->id){
+
+                                             $channelID = $ch_id->id;
+
+                                            } 
+                                        }  
+
+                                  } 
+        
+            elseif (preg_match("/\bchannel\b/i", $videoID))
+                                {   
+                                $cparts = explode("channel/", $videoID); 
+                                $channelID  = $cparts[1];
+                                }
+            
+       
+         if (preg_match("/\bwatch\b/i", $videoID))
+                                {
+                                $parts = explode("?v=", $videoID);
+                                $channelID=$parts[1];
+
+                                if(isset($channelID) && !empty($channelID) && is_array($channelID) && count($channelID)>1){
+
+                                $params = explode("&", $channelID);
+
+                                if(isset($params) && !empty($params) && is_array($params)){
+
+                                foreach($params as $param){
+                                    $kv = explode("=", $param);
+                                    if(isset($kv) && !empty($kv) && is_array($kv) && count($kv)>1){
+                                        if($kv[0]=='v'){
+                                        $channelID = $kv[1];
+                                        $flag = true;
+                                        break;
+                                        }
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+            
+        elseif (preg_match("/\byoutu.be\b/i", $videoID))
+                                {
+                                        if(!$flag){
+                                        $needle = "youtu.be/";
+                                        $pos = null;
+                                        $pos = strpos($videoID, $needle);
+                                        if ($pos !== false) {
+                                        $start = $pos + strlen($needle);
+                                        $channelID = substr($videoID, $start, 11);
+                                        // var_dump($vid_id);die;
+
+                                        }           
+                                    }   
+                                }
+    
+    
+    $ytube = $channelID;
+            //add_post_meta( $post_id, 'video_width', $ytube );
+            update_post_meta( $post_id,'channel_youtube' , $ytube);
+        
+        
+        
+    }
+    
+        
 
    
 }
