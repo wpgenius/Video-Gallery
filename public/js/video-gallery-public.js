@@ -29,8 +29,8 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
     
-    jQuery(document).ready(function() {
-	jQuery('.popup-youtube').magnificPopup({
+
+	/*jQuery('.popup-youtube').magnificPopup({
 		disableOn: 700,
 		type: 'iframe',
 		mainClass: 'mfp-fade',
@@ -38,8 +38,7 @@
 		preloader: false,
 
 		fixedContentPos: false
-	});
-});
+	});*/
 
 })( jQuery );
 

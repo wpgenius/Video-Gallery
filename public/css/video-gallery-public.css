@@ -1,6 +1,7 @@
 **
  * Simple fade transition,
  */
+ /*
 .mfp-fade.mfp-bg {
 	opacity: 0;
 	-webkit-transition: all 0.15s ease-out; 
@@ -28,10 +29,10 @@
 }
 
 
+
 * {
     box-sizing: border-box;
 }
-
 .column-1 {
     
     float: left;
@@ -85,7 +86,7 @@
 {
     font-size: 14px;
     margin: 9px 4px;
-    /* padding-left: 2px; */
+    /* padding-left: 2px; 
     line-height: 18px;
 }
 .column-5 {
@@ -101,7 +102,7 @@
 }
 
 
-/* Clearfix (clear floats) */
+/* Clearfix (clear floats) 
 .clearfix{
     overflow: auto;
     content: "";

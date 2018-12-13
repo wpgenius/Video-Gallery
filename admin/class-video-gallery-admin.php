@@ -182,7 +182,7 @@ class Video_Gallery_Admin {
 
     function video_post_meta_callback($post){
 
-		$value = get_post_meta($post->ID, 'mj_video_post_meta_value', true); ?>
+		$value = get_post_meta($post->ID, 'youtube_link', true); ?>
 
 		<table class="form-table cmb_metabox">
 			<tbody>
@@ -237,32 +237,30 @@ class Video_Gallery_Admin {
 		if(isset($_POST['youtube_link']) && $_POST['youtube_link'] != ''){
 
 			$mydata =  $_POST['youtube_link'];
-			//add_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
-			update_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
+			update_post_meta($post_id, 'youtube_link', $mydata);
 		}
         
         if($_POST["video_width"]){
             $width = $_POST["video_width"];
-            //add_post_meta( $post_id, 'video_width', $width );
             update_post_meta( $post_id,'video_width' , $width);
         }
         
          
         
         if( isset( $_POST[ 'video_popup' ] ) ) {
-        update_post_meta( $post_id, 'video_popup', 'yes' );
+        	update_post_meta( $post_id, 'video_popup', 'yes' );
         } else {
-        update_post_meta( $post_id, 'video_popup', 'no' );
+        	update_post_meta( $post_id, 'video_popup', 'no' );
         }  
         
         
         if( isset( $_POST[ 'channel_check' ] ) ) {
-        update_post_meta( $post_id, 'channel_check', 'yes' );
+        	update_post_meta( $post_id, 'channel_check', 'yes' );
         } else {
-        update_post_meta( $post_id, 'channel_check', 'no' );
+       	 	update_post_meta( $post_id, 'channel_check', 'no' );
         } 
         
-        $videoID = get_post_meta(get_the_ID(), 'mj_video_post_meta_value', true); 
+        $videoID = get_post_meta(get_the_ID(), 'youtube_link', true); 
         $API_key    = 'AIzaSyAvN-IZc_qQRoTdLa4of-4gMSZp7sP_ZYw';
         $channel="";
         if(preg_match("/\buser\b/i", $videoID) || preg_match("/\bchannel\b/i", $videoID)){
@@ -296,8 +294,8 @@ class Video_Gallery_Admin {
                                 }
             
        
-         if (preg_match("/\bwatch\b/i", $videoID))
-                                {
+         if (preg_match("/\bwatch\b/i", $videoID)){
+         	
                                 $parts = explode("?v=", $videoID);
                                 $channelID=$parts[1];
 
@@ -332,22 +330,13 @@ class Video_Gallery_Admin {
                                         if ($pos !== false) {
                                         $start = $pos + strlen($needle);
                                         $channelID = substr($videoID, $start, 11);
-                                        // var_dump($vid_id);die;
-
                                         }           
                                     }   
                                 }
     
-    
-    $ytube = $channelID;
-            //add_post_meta( $post_id, 'video_width', $ytube );
-            update_post_meta( $post_id,'channel_youtube' , $ytube);
-        
-        
-        
-    }
-    
-        
+    $ytube = $channelID;      
+    update_post_meta( $post_id,'channel_youtube' , $ytube);
 
-   
+  }
+    
 }

@@ -73,8 +73,8 @@ class Video_Gallery_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/video-gallery-public.css', array(), $this->version, 'all' );
-        wp_enqueue_style( 'magnific-popup', plugin_dir_url( __FILE__ ) . 'css/magnific-popup.css', array(), $this->version, 'all' );
+		//wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/video-gallery-public.css', array(), $this->version, 'all' );
+       // wp_enqueue_style( 'magnific-popup', plugin_dir_url( __FILE__ ) . 'css/magnific-popup.css', array(), $this->version, 'all' );
 
 	}
 
@@ -97,35 +97,38 @@ class Video_Gallery_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( 'jquery-magnific-popup', plugin_dir_url( __FILE__ ) . 'js/jquery.magnific-popup.js', array( 'jquery' ), $this->version, false );
-        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-public.js', array( 'jquery' ), $this->version, false );
+		//wp_enqueue_script( 'jquery-magnific-popup', plugin_dir_url( __FILE__ ) . 'js/jquery.magnific-popup.js', array( 'jquery' ), $this->version, false );
+        //wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-public.js', array( 'jquery' ), $this->version, false );
 
 	}
     
-     public function video_shortcode($atts){
+     public function wpg_video_shortcode($atts){
         
-        $a = shortcode_atts(
+        $attr = shortcode_atts(
             array(
-                'cat'   => null,
-                'columns'=>null,
+                'cat'   => '',
+                'columns'=> '1',
             )
         , $atts
         );
-   	 
-        // var_dump($a['columns']);die;
-            $args = array(
-            'post_type' => 'videos-gallery',
-            'tax_query' => array(
-					
-                    array(
-                        'taxonomy' => 'gallery-video-albums',   
-                        'field'    => 'slug',
-                        'terms'    => $a['cat'],
-                    ),
-                 )
-					
-                );
-	
+        $iftax ='';
+       	if ($attr['cat']!='') {
+           
+          $iftax = array(
+                        
+                        array(
+                            'taxonomy' => 'gallery-video-albums',   
+                            'field'    => 'slug',
+                            'terms'    => $attr['cat'],
+                        )
+                    );
+       }
+       	$args = array( 
+       				'post_type' => 'videos-gallery',
+       				'tax_query'=>$iftax,
+            	);
+           
+
         
 		$query = new WP_Query( $args );
          $count=0;
@@ -215,9 +218,9 @@ class Video_Gallery_Public {
         }
          
      }
-    public function register_shortcode(){
+    public function wpg_register_shortcode(){
         
-         add_shortcode( 'video', array( $this, 'video_shortcode') );
+         add_shortcode( 'wpg-video', array( $this, 'wpg_video_shortcode') );
     } 
 
 }
