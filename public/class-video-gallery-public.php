@@ -221,6 +221,104 @@ class Video_Gallery_Public {
     public function wpg_register_shortcode(){
         
          add_shortcode( 'wpg-video', array( $this, 'wpg_video_shortcode') );
-    } 
+    }
+	
+/*	function chanakya_trustee_shortcode_callback( $atts ){
+
+		$atts = extract(shortcode_atts( array(
+			'trustee_name' => '',
+			'trustee_image' => '',
+			'trustee_ldesignation' => '',
+			'trustee_cdesignation' => '',
+			'trustee_description' => ''
+			), $atts,'trustee_data'));
+
+	    $imageSrc = wp_get_attachment_image_src($trustee_image, 'trustee_thumbnails');
+	    $output = '';
+	    $output .= '<div class="trustee vc_row wpb_row vc_row-fluid">';
+	    if ($trustee_description !="") {
+			$output .='<div class="has_descp vc_col-sm-6 vc_col-xs-12">';
+	    }
+	    $output .='<div class="trustee_pic vc_col-xs-5"><div class="trustee_image"><img src="' . $imageSrc[0] . '" /></div></div> <div class="details_info vc_col-xs-7"><div class="trustee_details">';
+	    $output .='<div class="trustee_name"><h4>'.$trustee_name.'</h4></div>';
+	    $output .='<div class="trustee_ldesignation"><span>'.$trustee_ldesignation.'</span></div>';
+	    $output .='<div class="trustee_cdesignation"><p>'.$trustee_cdesignation.'</p></div>';
+	    $output .='</div></div>';
+	    if ($trustee_description !="") {
+			$output .='</div> <div class="trustee_desc vc_col-sm-6 vc_col-xs-12"> <div class="trustee_description"><p>'.$trustee_description.'</p></div></div>';
+	    }
+	    $output .='</div>';
+	    $output .='';
+
+	  return $output;
+	}
+	add_shortcode( 'chanakya_trustee', 'chanakya_trustee_shortcode_callback' );
+
+	add_action( 'init', 'chanakya_vc_addon' );
+
+	function chanakya_vc_addon(){
+
+		vc_map( 
+			array(
+			
+				"name" => __("Chanakya Trustee", 'vc_extend'),
+				"description" => __("Chanakya Trustee shortcode is used to display carousel of brand logo's.", 'vc_extend'),
+				"base" => "chanakya_trustee",
+				"class" => "",
+				"controls" => "full",
+				//"icon" =>  get_stylesheet_directory() . 'img/asterisk_yellow.png', // or css class name which you can reffer in your css file later. Example: "vc_extend_my_class"
+				"category" => __('Chanakya Blocks', 'js_composer'),
+				//'admin_enqueue_js' => array(plugins_url('assets/vc_extend.js', __FILE__)), // This will load js file in the VC backend editor
+				//'admin_enqueue_css' => array(plugins_url('assets/vc_extend_admin.css', __FILE__)), // This will load css file in the VC backend editor
+				"params" => array(
+			
+				  array(
+					  "type" => "textfield",
+					  "holder" => "div",
+					  "class" => "",
+					  "heading" => __("Trustee Name",'Chanakya_Mandal'),
+					  "param_name" => "trustee_name",                             
+					  "description" => "Enter Trustee Name",         
+					  ),
+				  array(
+					  "type" => "attach_image",
+					  "holder" => "div",
+					  "class" => "",
+					  "heading" => __("Trustee Image",'Chanakya_Mandal'),
+					  "param_name" => "trustee_image",                             
+					  "description" => "Select Trustee Image",         
+					  ),
+			
+				   array(
+					  "type" => "textfield",
+					  "holder" => "div",
+					  "class" => "",
+					  "heading" => __("Last Designation",'Chanakya_Mandal'),
+					  "param_name" => "trustee_ldesignation",                             
+					  "description" => "Enter Trustee's Last Designation",         
+					  ),
+			
+					array(
+					  "type" => "textfield",
+					  "holder" => "div",
+					  "class" => "",
+					  "heading" => __("Current Designation",'Chanakya_Mandal'),
+					  "param_name" => "trustee_cdesignation",                             
+					  "description" => "Enter Trustee's Current Designation",         
+					  ),
+			
+					array(
+					  "type" => "textarea",
+					  "holder" => "div",
+					  "class" => "",
+					  "heading" => __("Description",'Chanakya_Mandal'),
+					  "param_name" => "trustee_description",                             
+					  "description" => "Enter Description",         
+					  ), 
+				)
+			) 
+		);    
+	    
+	}*/ 
 
 }
