@@ -22,7 +22,7 @@
  * @since      1.0.0
  * @package    Video_Gallery
  * @subpackage Video_Gallery/includes
- * @author     Team WPGenius <mane.makarand@gmail.com>
+ * @author     Team WPGenius <deepak@wpgenius.in>
  */
 class Video_Gallery_i18n {
 

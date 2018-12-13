@@ -18,7 +18,7 @@
  *
  * @package    Video_Gallery
  * @subpackage Video_Gallery/admin
- * @author     Team WPGenius <mane.makarand@gmail.com>
+ * @author     Team WPGenius <deepak@wpgenius.in>
  */
 class Video_Gallery_Admin {
 
@@ -99,8 +99,8 @@ class Video_Gallery_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
-
-	public function vg_post_type() {
+    
+    public function video_post_type() {
 
 		$video_labels = array(
 			 			'name' => _x( 'Videos','' ),
@@ -155,7 +155,7 @@ class Video_Gallery_Admin {
 												),		
 					);
 
-		register_post_type( 'vg-videos', $video_args );
+		register_post_type( 'videos-gallery', $video_args );
 
 		$args = array( 
 
@@ -171,60 +171,183 @@ class Video_Gallery_Admin {
 
 				);
   
-  		register_taxonomy( 'vg-video-albums', array( 'vg-videos'), $args );
+  		register_taxonomy( 'gallery-video-albums', array( 'videos-gallery'), $args );
 
 	}
 
-	function vg_video_meta_box(){
-	
-		add_meta_box( 'youtube-video-link', __( 'YouTube Video'), array($this, 'vg_video_post_meta_callback'), 'vg-videos', 'advanced', 'high');
+    public function video_meta_box(){
+        
+		add_meta_box( 'youtube-video-link', __(  'Video'), array($this, 'video_post_meta_callback'), 'videos-gallery', 'advanced', 'high');
+    }
 
-	}
-
-	/*
-		Mj video call back function
-	*/
-	function vg_video_post_meta_callback($post){
+    function video_post_meta_callback($post){
 
 		$value = get_post_meta($post->ID, 'mj_video_post_meta_value', true); ?>
 
 		<table class="form-table cmb_metabox">
 			<tbody>
 				<tr class="cmb-type-text cmb_id_themestudio_custom_video_link">
-					<th style="width:13%">
-						<label for="youtube_link">Video Link</label>
+					
+                    <th style="width:13%">
+						<label for="youtube_link">Enter Video Link</label>
 					</th>
 					<td>
-						<input style="width:55%; padding:10px !important;" type="text" id="youtube_link" name="youtube_link" value="<?php echo $value; ?>" placeholder="https://www.youtube.com/watch?v=M323Pos6UTQ"/><br>
-						<label>Please enter only <b>YouTube</b> video link.</label>
+						<input style="width:60%; padding:10px !important;" type="text" id="youtube_link" name="youtube_link" value="<?php echo $value; ?>" /><br>
+						<label>Please enter video link.</label>
 					</td>
 				</tr>
-			</tbody>
+                
+                <tr>
+                    <th>
+                        <label for="video_popup">Check if URL is YouTube Channel :</label> 
+                    </th>
+                    <td><?php $checkboxMeta = get_post_meta( $post->ID );?>
+                        <input type="checkbox" name="channel_check" id="channel_check" value="yes" <?php if ( isset ( $checkboxMeta['channel_check'] ) ) checked( $checkboxMeta['channel_check'][0], 'yes' ); ?> />
+                    
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th>
+                        <label for="video_width">Width:</label> 
+                    </th>
+                    <td>
+                     <input type="number" name="video_width" id="video_width" value="<?php echo (get_post_meta( $post->ID,'video_width', true ))? get_post_meta( $post->ID,'video_width', true ):''; ?>"><br/><br/>
+                    
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="video_popup">Check for video popup:</label> 
+                    </th>
+                    <td><?php $checkboxMeta = get_post_meta( $post->ID );?>
+                        <input type="checkbox" name="video_popup" id="video_popup" value="yes" <?php if ( isset ( $checkboxMeta['video_popup'] ) ) checked( $checkboxMeta['video_popup'][0], 'yes' ); ?> />
+                    
+                    </td>
+                </tr>
+                
+                <td>
+                
+            </tbody>
 		</table><?php
 	}
 
-	/*
-		Mj video save meta
-	*/
-	public function vg_video_save_post_meta( $post_id ){
+    public function video_save_post_meta( $post_id ){
 
 		if(isset($_POST['youtube_link']) && $_POST['youtube_link'] != ''){
 
 			$mydata =  $_POST['youtube_link'];
-			add_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
+			//add_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
 			update_post_meta($post_id, 'mj_video_post_meta_value', $mydata);
 		}
+        
+        if($_POST["video_width"]){
+            $width = $_POST["video_width"];
+            //add_post_meta( $post_id, 'video_width', $width );
+            update_post_meta( $post_id,'video_width' , $width);
+        }
+        
+         
+        
+        if( isset( $_POST[ 'video_popup' ] ) ) {
+        update_post_meta( $post_id, 'video_popup', 'yes' );
+        } else {
+        update_post_meta( $post_id, 'video_popup', 'no' );
+        }  
+        
+        
+        if( isset( $_POST[ 'channel_check' ] ) ) {
+        update_post_meta( $post_id, 'channel_check', 'yes' );
+        } else {
+        update_post_meta( $post_id, 'channel_check', 'no' );
+        } 
+        
+        $videoID = get_post_meta(get_the_ID(), 'mj_video_post_meta_value', true); 
+        $API_key    = 'AIzaSyAvN-IZc_qQRoTdLa4of-4gMSZp7sP_ZYw';
+        $channel="";
+        if(preg_match("/\buser\b/i", $videoID) || preg_match("/\bchannel\b/i", $videoID)){
+            $channel="true";
+        }
+        if(preg_match("/\bwatch\b/i", $videoID) || preg_match("/\byoutu.be\b/i", $videoID)){
+            $channel="false";
+        }
+        
+          if (preg_match("/\buser\b/i", $videoID))
+                                {
+                                    $cparts = explode("user/", $videoID);
+                                    $c_video  = $cparts[1];
+                                    $channel_ids = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/channels?key='.$API_key.'&forUsername='.$c_video.'&part=id'));
 
-	}
+                                        foreach($channel_ids->items as $ch_id){
 
-	public function vg_add_submenu_page_to_post_type() {
+                                            if($ch_id->id){
 
-	   add_submenu_page( 'edit.php?post_type=vg-videos',__('Video Options', ''),__('Video Options', ''), 'delete_posts','vg-video-settings', array($this, 'vg_options_display'));
-	    
-	}
+                                             $channelID = $ch_id->id;
 
-	function vg_options_display(){
-		echo 'test';
-	}
+                                            } 
+                                        }  
 
+                                  } 
+        
+            elseif (preg_match("/\bchannel\b/i", $videoID))
+                                {   
+                                $cparts = explode("channel/", $videoID); 
+                                $channelID  = $cparts[1];
+                                }
+            
+       
+         if (preg_match("/\bwatch\b/i", $videoID))
+                                {
+                                $parts = explode("?v=", $videoID);
+                                $channelID=$parts[1];
+
+                                if(isset($channelID) && !empty($channelID) && is_array($channelID) && count($channelID)>1){
+
+                                $params = explode("&", $channelID);
+
+                                if(isset($params) && !empty($params) && is_array($params)){
+
+                                foreach($params as $param){
+                                    $kv = explode("=", $param);
+                                    if(isset($kv) && !empty($kv) && is_array($kv) && count($kv)>1){
+                                        if($kv[0]=='v'){
+                                        $channelID = $kv[1];
+                                        $flag = true;
+                                        break;
+                                        }
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+            
+        elseif (preg_match("/\byoutu.be\b/i", $videoID))
+                                {
+                                        if(!$flag){
+                                        $needle = "youtu.be/";
+                                        $pos = null;
+                                        $pos = strpos($videoID, $needle);
+                                        if ($pos !== false) {
+                                        $start = $pos + strlen($needle);
+                                        $channelID = substr($videoID, $start, 11);
+                                        // var_dump($vid_id);die;
+
+                                        }           
+                                    }   
+                                }
+    
+    
+    $ytube = $channelID;
+            //add_post_meta( $post_id, 'video_width', $ytube );
+            update_post_meta( $post_id,'channel_youtube' , $ytube);
+        
+        
+        
+    }
+    
+        
+
+   
 }

@@ -18,7 +18,7 @@
  *
  * @package    Video_Gallery
  * @subpackage Video_Gallery/public
- * @author     Team WPGenius <mane.makarand@gmail.com>
+ * @author     Team WPGenius <deepak@wpgenius.in>
  */
 class Video_Gallery_Public {
 
@@ -74,6 +74,7 @@ class Video_Gallery_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/video-gallery-public.css', array(), $this->version, 'all' );
+        wp_enqueue_style( 'magnific-popup', plugin_dir_url( __FILE__ ) . 'css/magnific-popup.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,8 +97,127 @@ class Video_Gallery_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'jquery-magnific-popup', plugin_dir_url( __FILE__ ) . 'js/jquery.magnific-popup.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/video-gallery-public.js', array( 'jquery' ), $this->version, false );
 
 	}
+    
+     public function video_shortcode($atts){
+        
+        $a = shortcode_atts(
+            array(
+                'cat'   => null,
+                'columns'=>null,
+            )
+        , $atts
+        );
+   	 
+        // var_dump($a['columns']);die;
+            $args = array(
+            'post_type' => 'videos-gallery',
+            'tax_query' => array(
+					
+                    array(
+                        'taxonomy' => 'gallery-video-albums',   
+                        'field'    => 'slug',
+                        'terms'    => $a['cat'],
+                    ),
+                 )
+					
+                );
+	
+        
+		$query = new WP_Query( $args );
+         $count=0;
+
+		if( $query->have_posts() ){
+			
+			$html = '';
+            $html.= '<div class="row">'; 
+			while ( $query->have_posts() ){
+
+              $query->the_post();
+            
+                $videoID = get_post_meta(get_the_ID(), 'channel_youtube', true);
+                $API_key    = 'AIzaSyAvN-IZc_qQRoTdLa4of-4gMSZp7sP_ZYw';
+                $maxResults = 20;
+                $videoWidth = get_post_meta(get_the_ID(), 'video_width', true);
+                
+                 
+               if(get_post_meta(get_the_ID(), 'channel_check', true)=='yes')
+                {
+                     $videoList = json_decode(file_get_contents('https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId='.$videoID.'&maxResults='.$maxResults.'&key='.$API_key.''));
+
+                    if(get_post_meta(get_the_ID(), 'video_popup', true)=='yes'){
+                       
+                                 foreach($videoList->items as $item){
+                                    $count++;
+                                    //Embed video
+                                    $html.=  '<div class="column-'.$a['columns'].'">';
+                                    $html.= '<a href="www.youtube.com/watch?v='.$item->id->videoId.'" class="popup-youtube"> 
+                                    <img  src="http://img.youtube.com/vi/'.$item->id->videoId.'/0.jpg"              width="'.$videoWidth.'" /><p>'.$item->snippet->title.'</p> </div>';
+
+                                     if($count%$a['columns']==0){
+                                     $html.='<div class="clearfix"></div>';
+                                     }
+
+                        } 
+
+                    }else{
+                                 foreach($videoList->items as $item){
+                                    $count++;
+                                    //Embed video
+                                    $html.=  '<div class="column-'.$a['columns'].'">';
+                                    $html.=  '<iframe width="'.$videoWidth.'" height="200" src="https://www.youtube.com/embed/'.$item->id->videoId.'" frameborder="0" allowfullscreen></iframe><p>'. $item->snippet->title .'<p> </div>';
+
+                                     if($count%$a['columns']==0){
+                                     $html.='<div class="clearfix"></div>';
+                                     }
+
+                        } 
+
+                    }
+                   
+               } else {
+                   
+                if(get_post_meta(get_the_ID(), 'video_popup', true)=='yes'){
+                        $count++;
+                       
+                        
+                        $html.=  '<div class="column-'.$a['columns'].'">';
+                        $html.= '<a href="www.youtube.com/watch?v='.$videoID.'" class="popup-youtube"> 
+                        <img  src="http://img.youtube.com/vi/'.$videoID.'/0.jpg"  width="'.$videoWidth.'" />';
+                        $html.= '</a>';
+                        $html.=  get_the_title(get_the_id());
+                        $html.='</div>';
+                        
+                    }else{
+                        $count++;
+                        $html.=  '<div class="column-'.$a['columns'].'">';
+
+                        //$html.= wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
+                        $html.= '<iframe width="'.$videoWidth.'" height="200" src="https://www.youtube.com/embed/'.$videoID.'"></iframe>';
+                        $html.=  get_the_title(get_the_id());
+                        $html.='</div>';
+                }
+                   
+                   
+               }   
+                if($count%$a['columns']==0){
+                        $html.='<div class="clearfix"></div>';
+                }
+                  
+            }
+			$html.=  '</div>';
+            return $html;
+
+         
+        }
+         
+     }
+    public function register_shortcode(){
+        
+         add_shortcode( 'video', array( $this, 'video_shortcode') );
+    } 
 
 }

@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Video_Gallery
  * @subpackage Video_Gallery/includes
- * @author     Team WPGenius <mane.makarand@gmail.com>
+ * @author     Team WPGenius <deepak@wpgenius.in>
  */
 class Video_Gallery {
 
@@ -156,10 +156,12 @@ class Video_Gallery {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'init', $plugin_admin, 'vg_post_type' );
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'vg_add_submenu_page_to_post_type' );
-		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'vg_video_meta_box' );
-		$this->loader->add_action( 'save_post', $plugin_admin, 'vg_video_save_post_meta' );
+        $this->loader->add_action( 'init', $plugin_admin, 'video_post_type' );
+    	$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'video_meta_box' );
+		$this->loader->add_action( 'save_post', $plugin_admin, 'video_save_post_meta' );
+        
+
+
 
 	}
 
@@ -176,6 +178,8 @@ class Video_Gallery {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+        $this->loader->add_action( 'init', $plugin_public, 'register_shortcode' );
+
 
 	}
 
