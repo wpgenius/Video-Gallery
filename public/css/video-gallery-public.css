@@ -28,44 +28,44 @@
 }
 
 
-* {
+/** {
     box-sizing: border-box;
-}
+*/}
 
-.column-1 {
+.wpg_column-1 {
     
     float: left;
     width:100%;
     padding: 5px;
 }
 
-.column-2 img, .column-2 iframe{
+.wpg_column-2 img, .wpg_column-2 iframe{
     
     width: 100%;
     height: auto;
     position: relative;
 }
 
-.column-2 {
+.wpg_column-2 {
     float: left;
     width:50%;
     height: 100%;
     padding: 5px;
 }
 
-.column-3 img, .column-3 iframe, .column-3 p{
+.wpg_column-3 img, .wpg_column-3 iframe, .wpg_column-3 p{
     
     width: 100%;
     height: auto;
     position: relative;
 }
-.column-3 {
+.wpg_column-3 {
     float: left;
     width:33.33%;
     padding: 5px;
 }
 
-.column-4 {
+.wpg_column-4 {
     float:left;
     width:25%;
     padding: 0;
@@ -74,26 +74,26 @@
 }
 
 
-.column-4 img, .column-4 iframe {
+.wpg_column-4 img, .wpg_column-4 iframe {
     
     width: 100%;
     height: auto;
     position: relative;
 
 }
-.column-4 p
+.wpg_column-4 p
 {
     font-size: 14px;
     margin: 9px 4px;
     /* padding-left: 2px; */
     line-height: 18px;
 }
-.column-5 {
+.wpg_column-5 {
     float: left;
     width:20%;
     padding: 5px;
 }
-.column-5 img, .column-5 iframe, .column-5 p{
+.wpg_column-5 img, .wpg_column-5 iframe, .wpg_column-5 p{
     
     width: 100%;
     height: auto;
@@ -102,14 +102,14 @@
 
 
 /* Clearfix (clear floats) */
-.clearfix{
+.wpg_clearfix{
     overflow: auto;
     content: "";
     clear: both;
     display: table;
 }
 
-.row::after {
+.wpg_row::after {
     content: "";
     clear: both;
     display: table;

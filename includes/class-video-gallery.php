@@ -153,16 +153,11 @@ class Video_Gallery {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Video_Gallery_Admin( $this->get_plugin_name(), $this->get_version() );
-
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-        $this->loader->add_action( 'init', $plugin_admin, 'video_post_type' );
+       	$this->loader->add_action( 'init', $plugin_admin, 'video_post_type' );
     	$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'video_meta_box' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'video_save_post_meta' );
-        
-
-
-
 	}
 
 	/**
@@ -175,11 +170,9 @@ class Video_Gallery {
 	private function define_public_hooks() {
 
 		$plugin_public = new Video_Gallery_Public( $this->get_plugin_name(), $this->get_version() );
-
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
         $this->loader->add_action( 'init', $plugin_public, 'register_shortcode' );
-
 
 	}
 
