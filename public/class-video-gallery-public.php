@@ -73,8 +73,8 @@ class Video_Gallery_Public {
 		 * class.
 		 */
 
-		//wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/video-gallery-public.css', array(), $this->version, 'all' );
-       // wp_enqueue_style( 'magnific-popup', plugin_dir_url( __FILE__ ) . 'css/magnific-popup.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/video-gallery-public.css', array(), $this->version, 'all' );
+        wp_enqueue_style( 'magnific-popup', plugin_dir_url( __FILE__ ) . 'css/magnific-popup.css', array(), $this->version, 'all' );
 
 	}
 
@@ -153,7 +153,7 @@ class Video_Gallery_Public {
                                     <img  src="http://img.youtube.com/vi/'.$item->id->videoId.'/0.jpg"              width="'.$videoWidth.'" /><p>'.$item->snippet->title.'</p> </div>';
 
                                      if($count%$a['columns']==0){
-                                     $html.='<div class="clearfix"></div>';
+                                     $html.='<div class="wpg_clearfix"></div>';
                                      }
 
                         } 
@@ -163,10 +163,10 @@ class Video_Gallery_Public {
                                     $count++;
                                     //Embed video
                                     $html.=  '<div class="wpg_column-'.$a['columns'].'">';
-                                    $html.=  '<iframe width="'.$videoWidth.'" height="200" src="https://www.youtube.com/embed/'.$item->id->videoId.'" frameborder="0" allowfullscreen></iframe><p>'. $item->snippet->title .'<p> </div>';
+                                    $html.=  '<iframe width="'.$videoWidth.'"  src="https://www.youtube.com/embed/'.$item->id->videoId.'" frameborder="0" allowfullscreen></iframe><p>'. $item->snippet->title .'<p> </div>';
 
                                      if($count%$a['columns']==0){
-                                     $html.='<div class="clearfix"></div>';
+                                     $html.='<div class="wpg_clearfix"></div>';
                                      }
 
                         } 
@@ -177,10 +177,10 @@ class Video_Gallery_Public {
                 if(get_post_meta(get_the_ID(), 'video_popup', true)=='yes'){
                         $count++;
                         $html.=  '<div class="wpg_column-'.$a['columns'].'">';
-                        $html.= '<a href="www.youtube.com/watch?v='.$videoID.'" class="popup-youtube"> 
-                        <img  src="http://img.youtube.com/vi/'.$videoID.'/0.jpg"  width="'.$videoWidth.'" />';
+                        $html.= '<a href="http://www.youtube.com/watch?v='.$videoID.'" class="popup-youtube"> 
+                        <img  src="https://img.youtube.com/vi/'.$videoID.'/0.jpg"  width="'.$videoWidth.'" />';
                         $html.= '</a>';
-                        $html.=  get_the_title(get_the_id());
+                        $html.=  "<h4>".get_the_title(get_the_id())."</h4>";
                         $html.='</div>';
                         
                     }else{
@@ -188,8 +188,8 @@ class Video_Gallery_Public {
                         $html.=  '<div class="wpg_column-'.$a['columns'].'">';
 
                         //$html.= wp_oembed_get( $videoID,array( 'width'=> $videoWidth, )  ); 
-                        $html.= '<iframe width="'.$videoWidth.'" height="200" src="https://www.youtube.com/embed/'.$videoID.'"></iframe>';
-                        $html.=  get_the_title(get_the_id());
+                        $html.= '<iframe width="'.$videoWidth.'" src="https://www.youtube.com/embed/'.$videoID.'"></iframe>';
+                        $html.=  "<h4>".get_the_title(get_the_id())."</h4>";
                         $html.='</div>';
                 }
                    
