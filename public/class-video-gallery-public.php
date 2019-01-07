@@ -209,8 +209,16 @@ class Video_Gallery_Public {
      }
     public function wpg_register_shortcode(){
         
-         add_shortcode( 'wpg-video', array( $this, 'wpg_video_shortcode') );
+        add_shortcode( 'wpg-video', array( $this, 'wpg_video_shortcode') );
     }
+
+    function load_photo_template($template) {
+    	global $post;
+		if ( is_post_type_archive('videos-gallery') ){
+		    include (plugin_dir_path( __FILE__ ) . "archive-video.php");
+            exit;
+		}
+	}
 	
 /*	function chanakya_trustee_shortcode_callback( $atts ){
 
