@@ -15,7 +15,7 @@ get_header();
 		
 			<div class="section">
 				<div class="section_wrapper clearfix"> 
-					<div class="mj_videos">
+					<div class="cm_videos">
 						<div class="container"> <?php
 							$count = 0;
 							while ( have_posts() ) : the_post();
@@ -25,10 +25,10 @@ get_header();
 									$youtube_id = $youtube_id['1'];
 									$count++;
 									 ?>
-									<div class="column one-second">
+									<div class="column wpg_column-3">
 										<?php
 										if($youtube_id){
-											echo '<div class="mj_youtube_video">';
+											echo '<div class="cm_youtube_video">';
 												echo '<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$youtube_id.'?rel=0&amp;showinfo=0" 
 														frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 											echo '</div>'; ?>
@@ -36,7 +36,7 @@ get_header();
 										} ?>
 									</div>
 									<?php 
-									if($count%2 == 0) 
+									if($count%3 == 0) 
 										echo '<div class="clearfix"></div>';
 								}
 							endwhile;
@@ -52,6 +52,16 @@ get_header();
 				</div>
 			</div>
 		</div>
+		
+		<!-- .four-columns - sidebar -->
+		<div class="sidebar four columns">
+			<div class="widget-area clearfix lines-boxed" style="min-height: 1348px;">
+				<?php 
+					dynamic_sidebar("sidebar-video-gallery-left-sidebar");
+				 ?>
+			</div>
+		</div>
+		
 	</div>
 </div>
 
