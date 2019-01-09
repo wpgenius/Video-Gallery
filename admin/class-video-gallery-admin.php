@@ -136,7 +136,7 @@ class Video_Gallery_Admin {
 			'labels'                => $video_labels,
 			'supports'              => array( 'title', 'thumbnail'),
 			'hierarchical'          => false,
-			'public'                => true,
+			'public'                => false,
 			'show_ui'               => true,
 			'show_in_menu'          => true,
 			'menu_position'         => 10,
@@ -160,17 +160,15 @@ class Video_Gallery_Admin {
 		$args = array( 
 			'hierarchical'			=> true,
 			'label'					=> 'Video Albums',
-			'show_admin_column' 	=> true, 
-			'show_ui'				=> true, 
-			'show_in_menu'			=> true,
-			'public'				=> true ,
-			'publicly_queryable'	=> false , 
-			'query_var'				=> true,
+			'public' 				=> true,
+			'publicly_queryable' 	=> true,
+			'query_var' 			=> true,
 			'singular_label'		=> 'Video Album',
-			//'rewrite'				=> array('slug'  => 'video-albums')
+			'rewrite'      			=> array( 'slug' => 'album' )
+
 		);
   
-  		register_taxonomy( 'gallery-video-albums', array( 'videos-gallery'), $args );
+  		register_taxonomy( 'gallery-video-albums', 'videos-gallery', $args );
 
 	}
 
