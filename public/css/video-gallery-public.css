@@ -116,9 +116,18 @@
    line-height: 21px;
 }
 
-.cm_videos h4 {
-    font-size: 16px;
-    color: #2f2f2f;
+.cm_videos .title {
+	font-size: 17px;
+    color: #f88302;
+    margin-bottom: 7px;
+    line-height: 20px;
+}
+
+.cm_videos .category-title {
+    margin-bottom: 0;
+    color: #5f5f5f;
+    font-size: 14px;
+	font-weight: 500;
 }
 
 
