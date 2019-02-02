@@ -20,11 +20,16 @@ get_header();
 						<div class="container"> <?php
 							$count = 0;
 							while ( have_posts() ) : the_post();
+								global $post;
 								$video_link = get_post_meta(get_the_ID(),'mj_video_post_meta_value', true);
 								$youtube_id = explode('?v=', $video_link);
 								if(sizeof($youtube_id) != 1){
 									$youtube_id = $youtube_id['1'];
 									$count++;
+									
+									
+									
+									
 									 ?>
 									<div class="column wpg_column-3">
 										<?php
@@ -33,7 +38,15 @@ get_header();
 												echo '<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$youtube_id.'?rel=0&amp;showinfo=0" 
 														frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
 											echo '</div>'; ?>
-											<h4><?php the_title(); ?></h4> <?php
+											<h4 class="title"><?php the_title(); ?></h4> <?php
+											
+											$categories = get_the_terms( $post->ID, 'gallery-video-albums' );
+											if($categories) {
+												foreach( $categories as $category ) {
+													echo '<h5 class="category-title">'.$category->name.'</h5>';
+												}
+											}
+											
 										} ?>
 									</div>
 									<?php 
