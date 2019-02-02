@@ -163,6 +163,7 @@ class Video_Gallery_Admin {
 			'public' 				=> true,
 			'publicly_queryable' 	=> true,
 			'query_var' 			=> true,
+			'show_admin_column' 	=> true,
 			'singular_label'		=> 'Video Album',
 			'rewrite'      			=> array( 'slug' => 'album' )
 
