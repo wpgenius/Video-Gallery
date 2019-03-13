@@ -13,7 +13,7 @@ get_header();
 		<!-- .sections_group -->
 		<div class="sections_group">
 			<?php //Breadcurmb
-				cm_show_breadcrumb(); ?>
+				cmp_show_breadcrumb(); ?>
 			<div class="section">
 				<div class="section_wrapper clearfix"> 
 					<div class="cm_videos">
