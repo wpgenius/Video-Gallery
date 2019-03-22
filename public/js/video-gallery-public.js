@@ -28,8 +28,8 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
-
-	jQuery('.popup-youtube').magnificPopup({
+ jQuery(document).ready(function() {
+	jQuery('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
 		disableOn: 700,
 		type: 'iframe',
 		mainClass: 'mfp-fade',
@@ -38,6 +38,7 @@
 
 		fixedContentPos: false
 	});
+});
 
 })( jQuery );
 
