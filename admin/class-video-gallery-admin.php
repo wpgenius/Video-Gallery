@@ -195,12 +195,12 @@ class Video_Gallery_Admin {
 					</td>
 				</tr>
                 
-                <tr>
+              <!--  <tr>
                     <th>
                         <label for="video_popup">Check if URL is YouTube Channel :</label> 
                     </th>
-                    <td><?php $checkboxMeta = get_post_meta( $post->ID );?>
-                        <input type="checkbox" name="channel_check" id="channel_check" value="yes" <?php if ( isset ( $checkboxMeta['channel_check'] ) ) checked( $checkboxMeta['channel_check'][0], 'yes' ); ?> />
+                    <td><?php //$checkboxMeta = get_post_meta( $post->ID );?>
+                        <input type="checkbox" name="channel_check" id="channel_check" value="yes" <?php //if ( isset ( $checkboxMeta['channel_check'] ) ) checked( $checkboxMeta['channel_check'][0], 'yes' ); ?> />
                     
                     </td>
                 </tr>
@@ -210,10 +210,10 @@ class Video_Gallery_Admin {
                         <label for="video_width">Width:</label> 
                     </th>
                     <td>
-                     <input type="number" name="video_width" id="video_width" value="<?php echo (get_post_meta( $post->ID,'video_width', true ))? get_post_meta( $post->ID,'video_width', true ):''; ?>"><br/><br/>
+                     <input type="number" name="video_width" id="video_width" value="<?php //echo (get_post_meta( $post->ID,'video_width', true ))? get_post_meta( $post->ID,'video_width', true ):''; ?>"><br/><br/>
                     
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <th>
                         <label for="video_popup">Check for video popup:</label> 
