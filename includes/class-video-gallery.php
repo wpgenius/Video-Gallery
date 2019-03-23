@@ -172,7 +172,7 @@ class Video_Gallery {
 		$plugin_public = new Video_Gallery_Public( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-       // $this->loader->add_action( 'init', $plugin_public, 'register_shortcode' );
+        //$this->loader->add_action( 'init', $plugin_public, 'wpg_register_shortcode' );
         $this->loader->add_filter( 'template_redirect', $plugin_public, 'load_photo_template' );
 
 	}

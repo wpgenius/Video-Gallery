@@ -214,15 +214,15 @@ class Video_Gallery_Admin {
                     
                     </td>
                 </tr>-->
-                <tr>
+                <!--<tr>
                     <th>
                         <label for="video_popup">Check for video popup:</label> 
                     </th>
-                    <td><?php $checkboxMeta = get_post_meta( $post->ID );?>
-                        <input type="checkbox" name="video_popup" id="video_popup" value="yes" <?php if ( isset ( $checkboxMeta['video_popup'] ) ) checked( $checkboxMeta['video_popup'][0], 'yes' ); ?> />
+                    <td><?php //$checkboxMeta = get_post_meta( $post->ID );?>
+                        <input type="checkbox" name="video_popup" id="video_popup" value="yes" <?php// if ( isset ( $checkboxMeta['video_popup'] ) ) checked( $checkboxMeta['video_popup'][0], 'yes' ); ?> />
                     
                     </td>
-                </tr>
+                </tr>-->
                 
                 <td>
                 

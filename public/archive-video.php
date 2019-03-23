@@ -33,7 +33,21 @@ get_header();
 									 ?>
 									<div class="column wpg_column-3">
 										<?php
-										if($youtube_id){
+                                            if($youtube_id){
+                                            echo '<div class="cm_youtube_video">';
+                                            echo '<a class="popup-youtube" href="http://www.youtube.com/watch?v='.$youtube_id.'" > 
+                                                    <img  src="https://img.youtube.com/vi/'.$youtube_id.'/0.jpg"  width="560" height="315"/></a>';
+                                            echo '</div>'; ?>
+											<h4 class="title"><?php the_title(); ?></h4> <?php
+                                                
+                                                $categories = get_the_terms( $post->ID, 'gallery-video-albums' );
+											if($categories) {
+												foreach( $categories as $category ) {
+													echo '<h5 class="category-title">'.$category->name.'</h5>';
+												}
+											}
+                                    }
+										/*if($youtube_id){
 											echo '<div class="cm_youtube_video">';
 												echo '<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$youtube_id.'?rel=0&amp;showinfo=0" 
 														frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
@@ -47,7 +61,7 @@ get_header();
 												}
 											}
 											
-										} ?>
+										}*/ ?>
 									</div>
 									<?php 
 									if($count%3 == 0) 
